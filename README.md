@@ -57,7 +57,7 @@ php artisan key:generate
 nano .env
 
 # Update these values
-APP_NAME="Coffee hook"
+APP_NAME="Give me updates"
 APP_URL=http://yourdomain.com
 
 DB_CONNECTION=mysql
@@ -84,7 +84,7 @@ USE_CLOUDFLARE=true
 3. **Database Migration**:
 ```bash
 # Run migrations (creates tables)
-php artisan migrate
+php artisan migrate:fresh --seed
 ```
 
 4. **Frontend Assets**:
