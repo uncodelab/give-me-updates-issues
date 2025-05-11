@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.1] - 2025-05-11
+
+### Documentation
+- Update installation instructions and app references
+
+
+
+
+
 ## [0.3.0] - 2025-05-11
 
 ### New Features
@@ -21,14 +30,9 @@
 - Configured application version to 0.0.0 for display in dashboard footer
 - Added webhook CSRF exemptions and admin middleware aliases
 
-
 ### Maintenance
 - Added sweetalert2, preline, and dev dependencies for Tailwind and Vite
 - Added webhook secrets, admin credentials, and Cloudflare usage to .env.example
-
-
-
-
 
 ## [0.2.0] - 2025-05-10
 
