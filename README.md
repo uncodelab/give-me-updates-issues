@@ -1,4 +1,5 @@
 # Give Me Updates - Digital Product Delivery System 🚀
+
 [![License: Restricted](https://img.shields.io/badge/License-Proprietary-red)](LICENSE) 
 ![PHP Version](https://img.shields.io/badge/PHP-8.4%2B-purple) 
 ![Laravel Version](https://img.shields.io/badge/Laravel-12%2B-red) 
@@ -7,12 +8,14 @@
 A robust solution for creators to manage and deliver digital product updates to customers who purchased through Ko-fi and BuyMeACoffee platforms.
 
 ### Traditional Method Pain Points
+
 1. Manual email updates
 2. Version confusion
 3. Security risks with permanent links
 4. No download tracking
 
 ### Our Advantages
+
 ✅ **Automatic Customer Sync**  
 ✅ **Centralized Version Control**  
 ✅ **Usage Analytics Dashboard**  
@@ -27,9 +30,14 @@ Stop wasting time on manual deliveries - automate like a pro!
 ## Requirements 📋
 
 - PHP 8.4+ with extensions
-- MySQL 5.7+/PostgreSQL
-- Composer 2.0+
-- GitHub Personal Access Token
+- MySQL 5.7+ or PostgreSQL 12+
+- Apache (with mod_rewrite) or Nginx
+- Composer 2.3+ (for PHP dependencies)
+- Node.js 18+ and npm 9+ (for frontend assets)
+- rsync (for safe file deployments)
+- GitHub Personal Access Token (with repo scope)
+- BuyMeACoffee/Ko-fi API Keys (for payment webhooks)
+- SMTP Credentials (for email delivery)
 
 ---
 
@@ -38,11 +46,11 @@ Stop wasting time on manual deliveries - automate like a pro!
 1. **Initial Setup**:
 ```bash
 # Extract the ZIP
-unzip give-me-updates-<version>.zip -d your-project-folder
-cd your-project-folder
+unzip give-me-updates-<version>.zip -d /path/to/your-project/
+cd /path/to/your-project/
 
 # Install PHP dependencies
-composer install --no-dev
+composer install --no-dev --optimize-autoloader
 
 # Create environment file
 cp .env.example .env
@@ -90,7 +98,7 @@ php artisan migrate:fresh --seed
 4. **Frontend Assets**:
 ```bash
 # Install Node.js dependencies
-npm install
+npm ci
 
 # Build assets
 npm run build
@@ -99,8 +107,7 @@ npm run build
 5. **Permissions**:
 ```bash
 # Set proper storage permissions
-chmod -R 775 storage/
-chmod -R 775 bootstrap/cache/
+chmod -R 775 storage bootstrap/cache
 ```
 
 6. **Configure Webhooks**:
@@ -123,13 +130,44 @@ To get the latest version of Give Me Updates:
 3. **Receive Download Link**:
    - A download link for the latest `give-me-updates-<version>.zip` will be emailed to you.
 4. **Update Your Installation**:
-   - Replace your existing files with the new:
-     - **Backup Your Current Installation**: Save a copy of your existing project folder and database to prevent data loss. Ensure your database is fully backed up before proceeding.
-     - **Extract the ZIP File**: Unzip the downloaded give-me-updates-<version>.zip to a temporary location.
-     - **Replace Files**: Copy the extracted files to your project directory, overwriting the old files.
-     - **Run Database Migrations**: If the update includes database changes, run php artisan migrate from your project directory to update the database schema.
-     - **Clear Cache**: If your application uses caching, run php artisan cache:clear to ensure new features work correctly.
-     - **Test the Update**: Verify that the application runs as expected after the update.
+   - **Backup Your Current Installation**: Save a copy of your existing project folder and database to prevent data loss. Ensure your database is fully backed up before proceeding.
+   ```bash
+   # Database backup (MySQL)
+   mysqldump -u [db_user] -p[db_password] [db_name] > backup_$(date +%F).sql
+   
+   # Project files backup
+   zip -r project_backup_$(date +%F).zip /path/to/your-project
+   ```
+   - **Extract the ZIP File**: Unzip the downloaded `give-me-updates-<version>.zip` to a temporary location.
+   ```bash
+   unzip give-me-updates-<version>.zip -d /tmp/gmu_update
+   ```
+   - **Replace Files**: Sync the extracted files to your project directory, overwriting the old files.
+   ```bash
+   # Safe sync (preserves node_modules/vendor/storage)
+   rsync -a --exclude='node_modules' --exclude='vendor' --exclude='storage' /tmp/gmu_update/ /path/to/your-project/ --delete
+   ```
+   - **Rebuild Dependencies**:
+   ```bash
+   cd /path/to/your-project
+   composer install --no-dev --optimize-autoloader
+   npm ci
+   npm run build
+   ```
+   - **Run Database Migrations**: If the update includes database changes, run `php artisan migrate` from your project directory to update the database schema.
+   ```bash
+   php artisan migrate
+   ```
+   - **Clear Cache**: If your application uses caching, run `php artisan cache:clear` to ensure new features work correctly.
+   ```bash
+   php artisan optimize:clear
+   php artisan view:cache
+   php artisan route:cache
+   ```
+   - **Test the Update**: Verify that the application runs as expected after the update.
+   ```bash
+   php artisan about  # Verify system status
+   ```
 
 **Note**: Check [givemeupdates.uncodelab.com](https://givemeupdates.uncodelab.com) periodically for new features and bug fixes.
 
@@ -138,6 +176,7 @@ To get the latest version of Give Me Updates:
 ## Features ✨
 
 ### Seller-Centric Management
+
 - **Dual Platform Integration**  
   - Auto-sync with Ko-fi and BuyMeACoffee webhooks
 - **Flexible Delivery Options**  
@@ -146,6 +185,7 @@ To get the latest version of Give Me Updates:
   - Automatic GitHub release packaging (latest release or main branch)
 
 ### Secure Customer Access
+
 - **Temporary Access Links**  
   - Limited time valid download tokens with usage tracking
 - **Anti-Abuse Protection**  
@@ -154,6 +194,7 @@ To get the latest version of Give Me Updates:
   - Masked email confirmation and download validation
 
 ### Intelligent Tracking
+
 - Real-time download analytics
 - Customer request history
 - Token usage monitoring
@@ -163,11 +204,13 @@ To get the latest version of Give Me Updates:
 ## Usage 💻
 
 ### Linking GitHub Repositories
+
 1. Navigate to Purchased Items
 2. Enter `username/repo` format
 3. System auto-validates repository access
 
 ### Customer Flow
+
 1. Purchase on supported platform
 2. Receive purchase ID via email
 3. Request download links at `http://yourdomain.com`
@@ -176,11 +219,13 @@ To get the latest version of Give Me Updates:
 ---
 
 ## Changelog 📜
+
 See the [CHANGELOG.md](https://github.com/uncodelab/give-me-updates-issues/blob/main/CHANGELOG.md) file for a detailed history of updates and changes to Give Me Updates.
 
 ---
 
 ## Issue Tracker 🐞
+
 [![GitHub Issues](https://img.shields.io/github/issues/uncodelab/give-me-updates-issues?label=Public%20Issues)](https://github.com/uncodelab/give-me-updates-issues)
 
 All bug reports and feature requests are managed through our public issue tracker.
@@ -200,6 +245,7 @@ Actively maintained with regular updates.
 ---
 
 ## License 📝
+
 [![License: Restricted](https://img.shields.io/badge/License-Proprietary-red)](LICENSE)
 
 **This is NOT open-source software.**  
