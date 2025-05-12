@@ -1,13 +1,18 @@
 # Changelog
 
+## [0.3.2] - 2025-05-12
+
+### Documentation
+- Update installation instructions
+
+
+
+
+
 ## [0.3.1] - 2025-05-11
 
 ### Documentation
 - Update installation instructions and app references
-
-
-
-
 
 ## [0.3.0] - 2025-05-11
 
